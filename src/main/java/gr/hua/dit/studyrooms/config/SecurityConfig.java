@@ -29,29 +29,55 @@ public class SecurityConfig {
         http
                 .securityMatcher("/**")
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register").permitAll() // Public
-                        .requestMatchers("/profile", "/logout").authenticated() // Private
-                        .anyRequest().permitAll() // the rest
+                        .requestMatchers("/", "/login", "/register").permitAll()
+                        // Student-only pages
+                        .requestMatchers("/profile","/room/calendar", "/rooms/reserve", "/rooms/reservations/my","/rooms/reservations/cancel", "/rooms/reservations/history").hasRole("STUDENT")
+                        // Staff-only pages
+                        .requestMatchers("/staff/**").hasRole("STAFF")
+                        .requestMatchers("/staff/dashboard",
+                                "/room/create",
+                                "/room/edit/**",
+                                "/room/list",
+                                "/bookings/manage","/bookings/cancel",
+                                "/stats/**"
+                        ).hasRole("STAFF")
+                        .requestMatchers( "/logout").authenticated()
+                        .requestMatchers("/api/**").authenticated()
+                        //Everything else is denied by default
+                        .anyRequest().denyAll()
+                )
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // custom login page (see login.html)
-                        .loginProcessingUrl("/login") // POST request target (handled by Spring Security)
-                        .defaultSuccessUrl("/profile", true)
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .successHandler((request, response, authentication) -> {
+
+                            boolean isStaff = authentication.getAuthorities()
+                                    .stream()
+                                    .anyMatch(a -> a.getAuthority().equals("ROLE_STAFF"));
+
+                            if (isStaff) {
+                                response.sendRedirect("/staff/dashboard");
+                            } else {
+                                response.sendRedirect("/profile");
+                            }
+                        })
                         .failureUrl("/login?error")
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout") // POST request target (handled by Spring Security)
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .permitAll()
-                )
-                // Disable basic security.
-                .httpBasic(basic -> {});
+                );
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

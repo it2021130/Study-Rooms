@@ -14,15 +14,13 @@ import java.util.Optional;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
-    Optional<Person> findByIdentifier(final String identifier);
 
     Optional<Person> findByEmailAddressIgnoreCase(final String emailAddress);
-
-    List<Person> findAllByTypeOrderByLastName(final PersonType type);
 
     boolean existsByEmailAddressIgnoreCase(final String emailAddress);
 
     boolean existsByMobilePhoneNumber(final String mobilePhoneNumber);
 
-    boolean existsByIdentifierIgnoreCase(final String identifier);
+    boolean existsByStudentIdIgnoreCase(final String studentId);
+
 }

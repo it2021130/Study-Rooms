@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Ιστορικό Κρατήσεων</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4"> Ιστορικό Κρατήσεων</h2>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Δωμάτιο</th>
+            <th>Θέσεις</th>
+            <th>Ημερομηνία</th>
+            <th>Ώρες</th>
+            <th>Κατάσταση</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="r : ${history}">
+            <td th:text="${r.room.name}"></td>
+            <td th:text="${r.seatsReserved}"></td>
+            <td th:text="${r.date}"></td>
+            <td th:text="${r.startTime} + ' - ' + ${r.endTime}"></td>
+
+            <td>
+                <span th:if="${r.status.name() == 'ACTIVE'}"
+                      class="badge text-bg-success">Ενεργή</span>
+
+                <span th:if="${r.status.name() == 'CANCELLED'}"
+                      class="badge text-bg-danger">Ακυρωμένη</span>
+                <span th:if="${r.status.name() == 'CANCELLED_BY_STAFF'}"
+                      class="badge text-bg-danger">Ακυρωμένη από το Προσωπικό</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/profile" class="btn btn-secondary mt-3"> Επιστροφή στο Προφίλ</a>
+
+</div>
+
+</body>
+</html>

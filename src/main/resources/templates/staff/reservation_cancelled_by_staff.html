@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Reservation Cancelled</title>
+</head>
+
+<body>
+
+<header layout:fragment="header">
+    <h1>Η Κράτηση Ακυρώθηκε</h1>
+</header>
+
+<section layout:fragment="main">
+
+    <h2 class="text-danger">Η κράτηση ακυρώθηκε από το προσωπικό.</h2>
+
+    <!-- ΠΙΣΩ ΣΤΟ DASHBOARD -->
+    <a class="btn btn-secondary btn-custom" th:href="@{/staff/dashboard}">
+        Επιστροφή στο Dashboard
+    </a>
+
+</section>
+
+</body>
+</html>

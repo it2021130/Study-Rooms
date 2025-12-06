@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calendar</title>
+
+    <!-- FullCalendar -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+
+    <!-- FULLSCREEN STYLE -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background: #004aad;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        /* Το calendar πιάνει όλη την οθόνη */
+        .calendar-wrapper {
+            width: 100%;
+            height: calc(100vh - 120px); /* full height */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #calendar {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 15px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    Study Rooms – Availability Calendar
+</header>
+
+<a class="back-link" th:href="@{/profile}">← Επιστροφή στο Προφίλ</a>
+
+<div class="calendar-wrapper">
+    <div id="calendar"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const calendarEl = document.getElementById('calendar');
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+
+            dateClick: function (info) {
+                loadAvailability(info.dateStr);
+            },
+
+            eventClick: function (info) {
+                const event = info.event;
+                const roomId = event.extendedProps.roomId;
+                const roomName = event.title;
+                const date = event.startStr.substring(0, 10);
+
+                if (confirm("Θέλεις να κάνεις κράτηση στο δωμάτιο:\n" + roomName + " ;")) {
+                    window.location.href = `/rooms/reserve?roomId=${roomId}&date=${date}`;
+                }
+            }
+        });
+
+        calendar.render();
+
+        async function loadAvailability(dateStr) {
+            const response = await fetch(`/api/rooms/availability?date=${dateStr}`);
+            const data = await response.json();
+
+            calendar.removeAllEvents();
+
+            data.forEach(room => {
+                calendar.addEvent({
+                    title: room.roomName + " (" + room.available + "/" + room.capacity + ")",
+                    start: room.start,
+                    end: room.end,
+                    color: room.available > 0 ? 'green' : 'red',
+                    extendedProps: {
+                        roomId: room.roomId
+                    }
+                });
+            });
+
+            calendar.gotoDate(dateStr);
+        }
+    });
+</script>
+
+</body>
+</html>

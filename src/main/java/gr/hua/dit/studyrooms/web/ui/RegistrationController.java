@@ -5,9 +5,11 @@ import gr.hua.dit.studyrooms.core.service.PersonService;
 import gr.hua.dit.studyrooms.core.service.model.CreatePersonRequest;
 import gr.hua.dit.studyrooms.core.service.model.CreatePersonResult;
 
+import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +32,16 @@ public class RegistrationController {
             final Authentication authentication,
             final Model model
     ) {
-        if (AuthUtils.isAuthenticated(authentication)) {
+
+        if (authentication != null && authentication.isAuthenticated()) {
+
+            boolean isStaff = authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_STAFF"));
+
+            if (isStaff) {
+                return "redirect:/staff/dashboard";
+            }
+
             return "redirect:/profile";
         }
         // Initial data for the form.
@@ -42,13 +53,25 @@ public class RegistrationController {
     @PostMapping("/register")
     public String handleFormSubmission(
             final Authentication authentication,
-            @ModelAttribute("createPersonRequest") final CreatePersonRequest createPersonRequest,
+            @Valid @ModelAttribute("createPersonRequest") final CreatePersonRequest createPersonRequest,
+            final BindingResult bindingResult,
             final Model model
     ) {
-        if (AuthUtils.isAuthenticated(authentication)) {
-            return "redirect:/profile"; // already logged in.
+        if (authentication != null && authentication.isAuthenticated()) {
+
+
+            boolean isStaff = authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_STAFF"));
+
+            if (isStaff) {
+                return "redirect:/staff/dashboard";
+            }
+            return "redirect:/profile";
         }
-        // TODO Form validation + UI errors.
+        if (bindingResult.hasErrors()) {
+            return "register";
+        }
+
         final CreatePersonResult createPersonResult = this.personService.createPerson(createPersonRequest);
         if (createPersonResult.created()) {
             return "redirect:/login";

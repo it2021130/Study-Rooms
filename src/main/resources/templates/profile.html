@@ -11,27 +11,33 @@
 <body>
 
 <header layout:fragment="header">
-    <h1>Office Hours <small>/ Profile</small></h1>
+    <h1>Study Rooms <small>/ Profile</small></h1>
 </header>
 
 <section layout:fragment="main">
 
-    <div>
-        <ul>
-            <li>Email <span th:text="${me.emailAddress()}"></span></li>
-            <li>Type <span  th:text="${me.type()}"></span></li>
-        </ul>
+    <!-- Ενέργειες -->
+    <div class="d-grid gap-3">
 
-        <hr>
+        <a class="btn btn-dark btn-lg"
+           th:href="@{/room/calendar}">
+            Προβολή Διαθεσιμότητας Δωματίων
+        </a>
 
-        <ul>
-            <li>
-                <a th:href="@{/profile}">Profile</a>
-            </li>
-            <li>
-                <a th:href="@{/logout}">Logout</a>
-            </li>
-        </ul>
+        <a class="btn btn-dark btn-lg"
+           th:href="@{/rooms/reservations/my}">
+            Προβολή & Ακύρωση Κρατήσεων
+        </a>
+
+        <a class="btn btn-dark btn-lg"
+           th:href="@{/rooms/reservations/history}">
+            Προβολή Ιστορικού Κρατήσεων
+        </a>
+
+        <a class="btn btn-dark btn-lg"
+           th:href="@{/logout}">
+            Αποσύνδεση
+        </a>
     </div>
 
 </section>

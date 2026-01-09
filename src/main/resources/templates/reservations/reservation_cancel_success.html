@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Reservation Cancelled</title>
+</head>
+
+<body>
+
+<header layout:fragment="header">
+    <h1>Η Κράτηση Ακυρώθηκε</h1>
+</header>
+
+<section layout:fragment="main">
+
+    <p>Η κράτηση ακυρώθηκε επιτυχώς.</p>
+
+    <a class="btn btn-primary" th:href="@{/rooms/reservations/my}">
+         Επιστροφή στις Κρατήσεις Μου
+    </a>
+
+</section>
+
+</body>
+</html>

@@ -1,5 +1,8 @@
 package gr.hua.dit.studyrooms.config;
 
+import gr.hua.dit.studyrooms.core.security.JwtAuthenticationFilter;
+import gr.hua.dit.studyrooms.web.rest.error.RestApiAccessDeniedHandler;
+import gr.hua.dit.studyrooms.web.rest.error.RestApiAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -7,9 +10,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Security configuration.
@@ -18,7 +24,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity // enables @PreAuthorize
 public class SecurityConfig {
 
-    // TODO API Security (stateless - JWT based)
+    /**
+     * API chain {@code "/api/**"} (stateless, JWT).
+     */
+    @Bean
+    @Order(1)
+    public SecurityFilterChain apiChain(final HttpSecurity http,
+                                        final JwtAuthenticationFilter jwtAuthenticationFilter,
+                                        final RestApiAuthenticationEntryPoint restApiAuthenticationEntryPoint,
+                                        final RestApiAccessDeniedHandler restApiAccessDeniedHandler) throws Exception {
+        http
+                .securityMatcher("/api/v1/**")
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/v1/auth/client-tokens").permitAll()
+                        .requestMatchers("/api/v1/**").authenticated()
+                )
+                .exceptionHandling(exh -> exh
+                        .authenticationEntryPoint(restApiAuthenticationEntryPoint)
+                        .accessDeniedHandler(restApiAccessDeniedHandler)
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable);
+        return http.build();
+    }
 
     /**
      * UI chain {@code "/**"} (stateful - cookie based).
@@ -28,30 +59,61 @@ public class SecurityConfig {
     public SecurityFilterChain uiChain(final HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/**")
+                // Το αφήνουμε ως σχόλιο προσωρινά... TODO configure.
+                // .csrf(csrf -> csrf.ignoringRequestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register").permitAll() // Public
-                        .requestMatchers("/profile", "/logout").authenticated() // Private
-                        .anyRequest().permitAll() // the rest
+                        .requestMatchers("/", "/login", "/register").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                        // Student-only pages
+                        .requestMatchers("/profile","/room/calendar", "/rooms/reserve", "/rooms/reservations/my","/rooms/reservations/cancel", "/rooms/reservations/history").hasRole("STUDENT")
+                        // Staff-only pages
+                        .requestMatchers("/staff/**").hasRole("STAFF")
+                        .requestMatchers("/staff/dashboard",
+                                "/room/create",
+                                "/room/edit/**",
+                                "/room/list",
+                                "/bookings/manage","/bookings/cancel"
+                        ).hasRole("STAFF")
+                        .requestMatchers( "/logout").authenticated()
+                        .requestMatchers("/api/**").authenticated()
+                        //Everything else is denied by default
+                        .anyRequest().denyAll()
+                )
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // custom login page (see login.html)
-                        .loginProcessingUrl("/login") // POST request target (handled by Spring Security)
-                        .defaultSuccessUrl("/profile", true)
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .successHandler((request, response, authentication) -> {
+
+                            boolean isStaff = authentication.getAuthorities()
+                                    .stream()
+                                    .anyMatch(a -> a.getAuthority().equals("ROLE_STAFF"));
+                            System.out.println("AUTH PRINCIPAL = " + authentication.getPrincipal());
+                            authentication.getAuthorities()
+                                    .forEach(a -> System.out.println("AUTHORITY = " + a.getAuthority()));
+
+                            if (isStaff) {
+                                response.sendRedirect("/staff/dashboard");
+                            } else {
+                                response.sendRedirect("/profile");
+                            }
+                        })
                         .failureUrl("/login?error")
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout") // POST request target (handled by Spring Security)
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .permitAll()
-                )
-                // Disable basic security.
-                .httpBasic(basic -> {});
+                );
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

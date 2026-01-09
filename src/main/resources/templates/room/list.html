@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Λίστα Χώρων Μελέτης</title>
+</head>
+
+<body>
+
+<header layout:fragment="header">
+    <h1> Χώροι Μελέτης <small>/ Λίστα</small></h1>
+</header>
+
+<section layout:fragment="main" class="container mt-4">
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h3 class="mb-3">Όλοι οι Χώροι Μελέτης</h3>
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Όνομα</th>
+                    <th>Χωρητικότητα</th>
+                    <th>Ώρα Έναρξης</th>
+                    <th>Ώρα Λήξης</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="room : ${rooms}">
+                    <td th:text="${room.name}"></td>
+                    <td th:text="${room.capacity}"></td>
+                    <td th:text="${room.openingHour}"></td>
+                    <td th:text="${room.closingHour}"></td>
+
+                    <td>
+                        <a th:href="@{'/room/edit/' + ${room.id}}"
+                           class="btn btn-warning btn-sm"> Επεξεργασία</a>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="/staff/dashboard" class="btn btn-secondary">
+             Επιστροφή στο Dashboard
+        </a>
+    </div>
+
+</section>
+
+</body>
+</html>

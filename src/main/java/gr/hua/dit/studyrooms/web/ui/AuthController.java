@@ -6,6 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.core.GrantedAuthority;
+
 
 /**
  * UI controller for user authentication (login and logout).
@@ -20,16 +22,30 @@ public class AuthController {
             final Model model
     ) {
         if (AuthUtils.isAuthenticated(authentication)) {
+
+            // --- Redirect based on ROLE ---
+            for (GrantedAuthority auth : authentication.getAuthorities()) {
+
+                if (auth.getAuthority().equals("ROLE_STAFF")) {
+                    return "redirect:/staff/dashboard"; // STAFF dashboard
+                }
+
+                if (auth.getAuthority().equals("ROLE_STUDENT")) {
+                    return "redirect:/profile"; // student profile
+                }
+            }
+            // fallback
             return "redirect:/profile";
         }
 
-        // Spring Security appends ?error or ?logout; show friendly messages.
+        // Messages
         if (request.getParameter("error") != null) {
             model.addAttribute("error", "Invalid email or password.");
         }
         if (request.getParameter("logout") != null) {
             model.addAttribute("message", "You have been logged out.");
         }
+
         return "login";
     }
 

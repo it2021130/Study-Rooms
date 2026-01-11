@@ -74,31 +74,36 @@
                     <option th:value="STUDENT">Student</option>
                     <option th:value="STAFF">Library Staff</option>
                 </select>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
             </div>
 
             <!-- IDENTIFIER -->
             <div class="mb-3">
                 <label class="form-label">Identifier</label>
-                <input type="text" th:field="*{identifier}" class="form-control"
+                <input type="text" th:field="*{studentId}" class="form-control"
                        placeholder="Example: it2023001" required>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></div>
             </div>
 
             <!-- FIRST NAME -->
             <div class="mb-3">
                 <label class="form-label">First Name</label>
                 <input type="text" th:field="*{firstName}" class="form-control" required>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
             </div>
 
             <!-- LAST NAME -->
             <div class="mb-3">
                 <label class="form-label">Last Name</label>
                 <input type="text" th:field="*{lastName}" class="form-control" required>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
             </div>
 
             <!-- EMAIL -->
             <div class="mb-3">
                 <label class="form-label">Email Address</label>
                 <input type="email" th:field="*{emailAddress}" class="form-control" required>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}"></div>
             </div>
 
             <!-- PHONE -->
@@ -106,12 +111,14 @@
                 <label class="form-label">Mobile Phone Number</label>
                 <input type="tel" th:field="*{mobilePhoneNumber}" class="form-control"
                        placeholder="+30 69XXXXXXXX" required>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('mobilePhoneNumber')}" th:errors="*{mobilePhoneNumber}"></div>
             </div>
 
             <!-- PASSWORD -->
             <div class="mb-3">
                 <label class="form-label">Password</label>
                 <input type="password" th:field="*{rawPassword}" class="form-control" required>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('rawPassword')}" th:errors="*{rawPassword}"></div>
             </div>
 
             <!-- SUBMIT -->

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Επεξεργασία Χώρου</title>
+</head>
+
+<body>
+
+<header layout:fragment="header">
+    <h1> Χώροι Μελέτης <small>/ Επεξεργασία</small></h1>
+</header>
+
+<section layout:fragment="main">
+
+    <div class="container mt-4" style="max-width: 700px;">
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h3 class="card-title mb-3">Επεξεργασία Χώρου Μελέτης</h3>
+
+                <div th:if="${errorMessage}" class="alert alert-danger">
+                    <span th:text="${errorMessage}"></span>
+                </div>
+
+                <form th:action="@{/room/edit/{id}(id=${editStudyRoomRequest.id})}"
+                      th:object="${editStudyRoomRequest}" method="post">
+
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Όνομα Χώρου</label>
+                        <input type="text" class="form-control"
+                               th:field="*{name}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Χωρητικότητα</label>
+                        <input type="number" class="form-control"
+                               th:field="*{capacity}" min="1">
+                    </div>
+
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label class="form-label">Ώρα Έναρξης</label>
+                            <input type="time" class="form-control"
+                                   th:field="*{openingHour}">
+                        </div>
+
+                        <div class="col mb-3">
+                            <label class="form-label">Ώρα Λήξης</label>
+                            <input type="time" class="form-control"
+                                   th:field="*{closingHour}">
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            Αποθήκευση Αλλαγών
+                        </button>
+
+                        <a href="/staff/dashboard" class="btn btn-secondary mt-2">
+                            Επιστροφή στο Dashboard
+                        </a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

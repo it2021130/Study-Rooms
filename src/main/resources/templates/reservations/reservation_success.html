@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Reservation Successful</title>
+</head>
+
+<body>
+
+<header layout:fragment="header">
+    <h1>Η Κράτηση Ολοκληρώθηκε</h1>
+</header>
+
+<section layout:fragment="main">
+
+    <p>Η κράτησή σας καταχωρήθηκε επιτυχώς.</p>
+
+    <a class="btn btn-primary" th:href="@{/profile}">
+        Επιστροφή στο Προφίλ
+    </a>
+
+</section>
+
+</body>
+</html>

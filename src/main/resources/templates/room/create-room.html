@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Δημιουργία Χώρου Μελέτης</title>
+</head>
+
+<body>
+
+<header layout:fragment="header">
+    <h1> Χώροι Μελέτης <small>/ Δημιουργία Χώρου</small></h1>
+</header>
+
+<section layout:fragment="main">
+
+    <div class="container mt-4" style="max-width: 700px;">
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h3 class="card-title mb-3">Δημιουργία Νέου Χώρου Μελέτης</h3>
+
+                <!-- Error Message -->
+                <div th:if="${errorMessage}" class="alert alert-danger">
+                    <span th:text="${errorMessage}"></span>
+                </div>
+
+                <form th:action="@{/room/create}" th:object="${createStudyRoomRequest}" method="post">
+
+                    <div class="mb-3">
+                        <label class="form-label">Όνομα Χώρου</label>
+                        <input type="text" class="form-control" th:field="*{name}"
+                               placeholder="π.χ. Αίθουσα Μελέτης Α">
+                        <div class="text-danger small mt-1"
+                             th:if="${#fields.hasErrors('name')}"
+                             th:errors="*{name}"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Χωρητικότητα</label>
+                        <input type="number" class="form-control"
+                               th:field="*{capacity}" min="1" placeholder="π.χ. 20">
+                        <div class="text-danger small mt-1"
+                             th:if="${#fields.hasErrors('capacity')}"
+                             th:errors="*{capacity}"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label class="form-label">Ώρα Έναρξης</label>
+                            <input type="time" class="form-control" th:field="*{openingHour}">
+                            <div class="text-danger small mt-1"
+                                 th:if="${#fields.hasErrors('openingHour')}"
+                                 th:errors="*{openingHour}"></div>
+                        </div>
+                        <div class="col mb-3">
+                            <label class="form-label">Ώρα Λήξης</label>
+                            <input type="time" class="form-control" th:field="*{closingHour}">
+                            <div class="text-danger small mt-1"
+                                 th:if="${#fields.hasErrors('closingHour')}"
+                                 th:errors="*{closingHour}"></div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            Δημιουργία Χώρου
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

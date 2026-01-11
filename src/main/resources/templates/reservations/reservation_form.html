@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <title>New Reservation</title>
+</head>
+<body>
+<header layout:fragment="header">
+    <h1>Δημιουργία Κράτησης</h1>
+</header>
+
+<section layout:fragment="main">
+
+    <div class="mb-3">
+        <a th:href="@{/room/calendar}"> Επιστροφή στο ημερολόγιο</a>
+    </div>
+
+    <form method="post" th:action="@{/rooms/reserve}" th:object="${form}">
+        <input type="hidden" th:field="*{roomId}" />
+
+        <div class="mb-3">
+            <label>Ημερομηνία</label>
+            <input type="text" class="form-control" th:field="*{date}" readonly />
+            <div class="text-danger small mt-1"
+                 th:if="${#fields.hasErrors('date')}"
+                 th:errors="*{date}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label>Θέσεις</label>
+            <input type="number" class="form-control" th:field="*{seatsRequested}" min="1"/>
+            <div class="text-danger small mt-1"
+                 th:if="${#fields.hasErrors('seatsRequested')}"
+                 th:errors="*{seatsRequested}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label>Χώρος</label>
+            <input type="text" class="form-control" th:value="${room.name}" readonly />
+        </div>
+
+        <button class="btn btn-primary">Κράτηση</button>
+    </form>
+
+</section>
+</body>
+</html>

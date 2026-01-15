@@ -63,9 +63,6 @@ public class SmsNotificationPortImpl implements SmsNotificationPort {
 
         final SendSmsRequest body = new SendSmsRequest(e164, content);
 
-        // Alternative: (Spring speaks JSON!!! Search for ObjectMapper!)
-        // final Map<String, Object> body = Map.of("e164", e164, "body", content);
-
         // HTTP Request
         // --------------------------------------------------
 

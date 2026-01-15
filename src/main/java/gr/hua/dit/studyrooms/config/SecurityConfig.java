@@ -59,8 +59,6 @@ public class SecurityConfig {
     public SecurityFilterChain uiChain(final HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/**")
-                // Το αφήνουμε ως σχόλιο προσωρινά... TODO configure.
-                // .csrf(csrf -> csrf.ignoringRequestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
@@ -90,7 +88,6 @@ public class SecurityConfig {
                             boolean isStaff = authentication.getAuthorities()
                                     .stream()
                                     .anyMatch(a -> a.getAuthority().equals("ROLE_STAFF"));
-                            System.out.println("AUTH PRINCIPAL = " + authentication.getPrincipal());
                             authentication.getAuthorities()
                                     .forEach(a -> System.out.println("AUTHORITY = " + a.getAuthority()));
 

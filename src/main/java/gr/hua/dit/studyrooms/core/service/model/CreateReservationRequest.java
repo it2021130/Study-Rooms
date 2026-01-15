@@ -5,8 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-
+/**
+ * DTO for requesting the creation of a study room reservation.
+ */
 public record  CreateReservationRequest(
 
         @NotNull @Positive long roomId,

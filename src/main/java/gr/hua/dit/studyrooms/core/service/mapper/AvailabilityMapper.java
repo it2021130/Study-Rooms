@@ -5,6 +5,10 @@ import gr.hua.dit.studyrooms.core.service.model.RoomAvailabilityView;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+/**
+ * Mapper for converting study room availability data
+ * to {@link RoomAvailabilityView}.
+ */
 
 @Component
 public class AvailabilityMapper {

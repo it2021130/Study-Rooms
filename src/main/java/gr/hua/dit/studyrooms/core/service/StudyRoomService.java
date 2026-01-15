@@ -4,8 +4,6 @@ import gr.hua.dit.studyrooms.core.service.model.CreateStudyRoomRequest;
 import gr.hua.dit.studyrooms.core.service.model.CreateStudyRoomResult;
 import gr.hua.dit.studyrooms.core.service.model.UpdateStudyRoomResult;
 import gr.hua.dit.studyrooms.core.service.model.UpdateStudyRoomRequest;
-import gr.hua.dit.studyrooms.core.service.model.StudyRoomView;
-import java.util.List;
 
 /**
  * Service for managing {@link gr.hua.dit.studyrooms.core.model.StudyRoom}.

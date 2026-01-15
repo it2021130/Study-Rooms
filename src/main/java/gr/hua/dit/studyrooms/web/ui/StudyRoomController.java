@@ -12,7 +12,10 @@ import org.springframework.ui.Model;
 import gr.hua.dit.studyrooms.core.service.model.UpdateStudyRoomRequest;
 import gr.hua.dit.studyrooms.core.repository.StudyRoomRepository;
 import gr.hua.dit.studyrooms.core.model.StudyRoom;
-
+/**
+ * UI controller for staff management of study rooms
+ * (creation, listing, and update of study room data).
+ */
 @Controller
 public class StudyRoomController {
 
@@ -28,7 +31,7 @@ public class StudyRoomController {
         this.studyRoomDataService = studyRoomDataService;
     }
 
-    /** GET → Show creation form */
+    /** GET -> Show creation form */
     @PreAuthorize("hasRole('STAFF')")
     @GetMapping("/room/create")
     public String showCreateRoomForm(Model model) {
@@ -40,7 +43,7 @@ public class StudyRoomController {
         return "room/create-room";
     }
 
-    /** POST → Handle creation */
+    /** POST -> Handle creation */
     @PreAuthorize("hasRole('STAFF')")
     @PostMapping("/room/create")
     public String handleCreateRoom(

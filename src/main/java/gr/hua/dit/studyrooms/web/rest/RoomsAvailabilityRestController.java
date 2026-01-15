@@ -22,7 +22,7 @@ public class RoomsAvailabilityRestController {
     {
         LocalDate d = LocalDate.parse(date);
         if (d.isBefore(LocalDate.now())) {
-            return List.of(); // επιστρέφει κενή λίστα → δεν εμφανίζει τίποτα στο Calendar
+            return List.of(); // επιστρέφει κενή λίστα -> δεν εμφανίζει τίποτα στο Calendar
         }
         return availabilityService.getAvailabilityForDate(d);
     }

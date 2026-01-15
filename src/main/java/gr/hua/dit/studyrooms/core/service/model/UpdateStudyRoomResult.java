@@ -1,6 +1,8 @@
 package gr.hua.dit.studyrooms.core.service.model;
 
-
+/**
+ * Result DTO representing the outcome of a study room update.
+ */
 public record UpdateStudyRoomResult(
         boolean updated,
         String reason,

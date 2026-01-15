@@ -22,7 +22,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * Default implementation of {@link ReservationBusinessLogicService}.
+ */
 @Service
 public class ReservationBusinessLogicServiceImpl implements ReservationBusinessLogicService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReservationBusinessLogicServiceImpl.class);

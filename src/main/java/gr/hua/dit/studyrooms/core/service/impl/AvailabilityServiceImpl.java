@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * Default implementation of {@link AvailabilityService}.
+ */
 @Service
 public class AvailabilityServiceImpl implements AvailabilityService {
 

@@ -1,5 +1,6 @@
 package gr.hua.dit.studyrooms.core.repository;
 
+
 import gr.hua.dit.studyrooms.core.model.Reservation;
 
 import gr.hua.dit.studyrooms.core.model.ReservationStatus;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-
+/**
+ * Repository for {@link Reservation} entity.
+ */
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 

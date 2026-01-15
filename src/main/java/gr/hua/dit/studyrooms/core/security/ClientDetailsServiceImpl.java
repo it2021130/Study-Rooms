@@ -40,10 +40,6 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
         }
 
         if (Objects.equals(client.getSecret(), secret)) {
-            // TODO better and more secure implementation. For now, it's just fine!
-            // ClientDetails.id     - map - Client.name
-            // ClientDetails.secret - map - Client.secret
-            // ClientDetails.roles  - map - Client.permissionsCsv (comma separated values)
             final ClientDetails clientDetails = new ClientDetails(
                     client.getName(),
                     client.getSecret(),

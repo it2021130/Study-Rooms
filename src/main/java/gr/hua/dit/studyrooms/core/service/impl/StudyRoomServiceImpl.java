@@ -12,7 +12,7 @@ import gr.hua.dit.studyrooms.core.service.model.CreateStudyRoomResult;
 import gr.hua.dit.studyrooms.core.service.model.StudyRoomView;
 import gr.hua.dit.studyrooms.core.service.model.UpdateStudyRoomResult;
 import gr.hua.dit.studyrooms.core.service.model.UpdateStudyRoomRequest;
-import java.util.List;
+
 
 import org.springframework.stereotype.Service;
 
@@ -41,8 +41,21 @@ public class StudyRoomServiceImpl implements StudyRoomService {
     }
     @Override
     public UpdateStudyRoomResult updateStudyRoom(Long id,
-                                                 UpdateStudyRoomRequest req,
+                                                 UpdateStudyRoomRequest updateStudyRoomRequest,
                                                  boolean notify) {
+        if (updateStudyRoomRequest == null) throw new NullPointerException();
+        final String name = updateStudyRoomRequest.name().strip();
+        final int capacity = updateStudyRoomRequest.capacity();
+        final String openingStr = updateStudyRoomRequest.openingHour().strip();
+        final String closingStr = updateStudyRoomRequest.closingHour().strip();
+
+        LocalTime openingTime;
+        LocalTime closingTime;
+
+        final CurrentUser currentUser = this.currentUserProvider.requireCurrentUser();
+        if (currentUser.type() != PersonType.STAFF) {
+            throw new SecurityException("Staff type/role required");
+        }
 
         if (id == null) {
             return UpdateStudyRoomResult.fail("Invalid room ID.");
@@ -56,35 +69,35 @@ public class StudyRoomServiceImpl implements StudyRoomService {
         StudyRoom room = roomOpt.get();
 
         // Validate capacity
-        if (req.capacity() <= 0) {
+        if (capacity <= 0) {
             return UpdateStudyRoomResult.fail("Capacity must be greater than 0");
         }
 
-        LocalTime opening;
-        LocalTime closing;
-
+        if (name.isEmpty()) {
+            return UpdateStudyRoomResult.fail("Room name cannot be empty");
+        }
         try {
-            opening = LocalTime.parse(req.openingHour());
-            closing = LocalTime.parse(req.closingHour());
+            openingTime = LocalTime.parse(openingStr);
+            closingTime = LocalTime.parse(closingStr);
         } catch (Exception e) {
             return UpdateStudyRoomResult.fail("Invalid time format (HH:MM)");
         }
 
-        if (!opening.isBefore(closing)) {
+        if (!openingTime.isBefore(closingTime)) {
             return UpdateStudyRoomResult.fail("Opening time must be before closing time");
         }
 
         // If name changed -> check uniqueness
-        if (!room.getName().equalsIgnoreCase(req.name()) &&
-                studyRoomRepository.existsByNameIgnoreCase(req.name())) {
+        if (!name.equalsIgnoreCase(updateStudyRoomRequest.name()) &&
+                studyRoomRepository.existsByNameIgnoreCase(updateStudyRoomRequest.name())) {
             return UpdateStudyRoomResult.fail("A room with this name already exists.");
         }
 
         // Update entity
-        room.setName(req.name());
-        room.setCapacity(req.capacity());
-        room.setOpeningTime(opening);
-        room.setClosingTime(closing);
+        room.setName(updateStudyRoomRequest.name());
+        room.setCapacity(updateStudyRoomRequest.capacity());
+        room.setOpeningTime(openingTime);
+        room.setClosingTime(closingTime);
 
         // Save
         room = studyRoomRepository.save(room);

@@ -6,6 +6,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+/**
+ * UI controller for displaying the authenticated student's profile information.
+ */
 @PreAuthorize("hasRole('STUDENT')")
 @Controller
 public class ProfileController {

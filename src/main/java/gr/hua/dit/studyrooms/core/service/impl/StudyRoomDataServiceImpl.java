@@ -8,6 +8,9 @@ import gr.hua.dit.studyrooms.core.service.model.StudyRoomView;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+/**
+ * Default implementation of {@link StudyRoomDataService}.
+ */
 @Service
 public class StudyRoomDataServiceImpl implements StudyRoomDataService {
     private final StudyRoomRepository studyRoomRepository;

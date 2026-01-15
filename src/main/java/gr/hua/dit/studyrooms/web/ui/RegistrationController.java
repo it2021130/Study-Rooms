@@ -33,7 +33,7 @@ public class RegistrationController {
             final Model model
     ) {
 
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (AuthUtils.isAuthenticated(authentication)) {
 
             boolean isStaff = authentication.getAuthorities().stream()
                     .anyMatch(a -> a.getAuthority().equals("ROLE_STAFF"));
@@ -57,7 +57,7 @@ public class RegistrationController {
             final BindingResult bindingResult,
             final Model model
     ) {
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (AuthUtils.isAuthenticated(authentication)) {
 
 
             boolean isStaff = authentication.getAuthorities().stream()
@@ -71,7 +71,11 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return "register";
         }
-
+        if (createPersonRequest.type() == PersonType.STAFF) {
+            model.addAttribute("errorMessage",
+                    "Staff accounts cannot be created via registration");
+            return "register";
+        }
         final CreatePersonResult createPersonResult = this.personBusinessLogicService.createPerson(createPersonRequest);
         if (createPersonResult.created()) {
             return "redirect:/login";

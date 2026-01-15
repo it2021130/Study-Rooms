@@ -26,7 +26,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "person",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uk_person_identifier", columnNames = "studentId"),
+                @UniqueConstraint(name = "uk_person_identifier", columnNames = "huaId"),
                 @UniqueConstraint(name = "uk_person_email_address", columnNames = "email_address"),
                 @UniqueConstraint(name = "uk_person_mobile_phone_number", columnNames = "mobile_phone_number")
         },
@@ -44,8 +44,8 @@ public class Person {
     @NotNull
     @NotBlank
     @Size(max = 20)
-    @Column(name = "studentId", nullable = false, length = 20)
-    private String studentId;
+    @Column(name = "huaId", nullable = false, length = 20)
+    private String huaId ;
 
     @NotNull
     @NotBlank
@@ -93,7 +93,7 @@ public class Person {
     }
 
     public Person(Long id,
-                  String studentId,
+                  String huaId ,
                   String firstName,
                   String lastName,
                   String mobilePhoneNumber,
@@ -103,7 +103,7 @@ public class Person {
                   Instant penaltyUntil,
                   Instant createdAt) {
         this.id = id;
-        this.studentId = studentId;
+        this.huaId  = huaId ;
         this.firstName = firstName;
         this.lastName = lastName;
         this.mobilePhoneNumber = mobilePhoneNumber;
@@ -122,12 +122,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getStudentId() {
-        return studentId;
+    public String gethuaId () {
+        return huaId ;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void sethuaId (String huaId) {
+        this.huaId  = huaId;
     }
 
     public String getFirstName() {
@@ -204,7 +204,7 @@ public class Person {
     public String toString() {
         return "Person{" +
                 "id=" + id +
-                ", studentId='" + studentId + '\'' +
+                ", huaId='" + huaId  + '\'' +
                 ", type=" + type +
                 '}';
     }

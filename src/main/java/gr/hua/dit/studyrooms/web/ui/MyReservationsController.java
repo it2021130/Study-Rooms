@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+/**
+ * UI controller for viewing and managing a student's reservations
+ */
 @PreAuthorize("hasRole('STUDENT')")
 @Controller
 @RequestMapping("/rooms")

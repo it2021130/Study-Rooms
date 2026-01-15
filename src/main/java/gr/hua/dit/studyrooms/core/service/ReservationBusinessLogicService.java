@@ -5,6 +5,9 @@ import gr.hua.dit.studyrooms.core.service.model.CreateReservationRequest;
 import gr.hua.dit.studyrooms.core.service.model.ReservationView;
 
 import java.util.List;
+/**
+ * Service for managing {@link gr.hua.dit.studyrooms.core.model.Reservation}.
+ */
 
 public interface ReservationBusinessLogicService {
 

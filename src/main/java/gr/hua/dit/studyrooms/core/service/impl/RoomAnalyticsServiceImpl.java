@@ -4,14 +4,15 @@ import gr.hua.dit.studyrooms.core.model.Reservation;
 import gr.hua.dit.studyrooms.core.model.ReservationStatus;
 import gr.hua.dit.studyrooms.core.repository.ReservationRepository;
 import gr.hua.dit.studyrooms.core.repository.StudyRoomRepository;
-import gr.hua.dit.studyrooms.core.service.ReservationDataService;
 import gr.hua.dit.studyrooms.core.service.RoomAnalyticsService;
 import gr.hua.dit.studyrooms.core.service.model.RoomOccupancyView;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-
+/**
+ * Default implementation of {@link RoomAnalyticsService}.
+ */
 @Service
 public class RoomAnalyticsServiceImpl implements RoomAnalyticsService {
 

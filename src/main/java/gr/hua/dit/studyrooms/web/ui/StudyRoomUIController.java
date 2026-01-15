@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-
+/**
+ * UI controller responsible for handling student reservations
+ */
 @Controller
 @RequestMapping("/rooms")
 public class StudyRoomUIController {

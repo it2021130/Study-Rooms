@@ -18,8 +18,8 @@ public class HomepageController {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_STAFF"));
 
         if (isStaff) {
-            return "redirect:/staff/dashboard";   // STAFF → Dashboard
+            return "redirect:/staff/dashboard";   // STAFF -> Dashboard
         }
-        return "redirect:/profile";                // STUDENT → Profile
+        return "redirect:/profile"; // STUDENT -> Profile
     }
 }

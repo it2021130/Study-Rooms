@@ -8,7 +8,7 @@ import jakarta.validation.constraints.*;
  */
 public record CreatePersonRequest(
         @NotNull PersonType type,
-        @NotNull @NotBlank @Size(max = 20) String studentId,
+        @NotNull @NotBlank @Size(max = 20) String huaId,
         @NotNull @NotBlank @Size(max = 100) String firstName,
         @NotNull @NotBlank @Size(max = 100)  String lastName,
         @NotNull @NotBlank @Size(max = 100) @Email String emailAddress,

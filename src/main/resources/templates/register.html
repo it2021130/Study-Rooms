@@ -67,22 +67,25 @@
         <!-- REGISTRATION FORM -->
         <form th:action="@{/register}" method="post" th:object="${createPersonRequest}">
 
-            <!-- TYPE -->
+            <!-- ROLE (READ ONLY) -->
             <div class="mb-3">
-                <label class="form-label">I am:</label>
-                <select th:field="*{type}" class="form-select">
-                    <option th:value="STUDENT">Student</option>
-                    <option th:value="STAFF">Library Staff</option>
-                </select>
-                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+                <label class="form-label">Role</label>
+                <input type="text"
+                       class="form-control"
+                       value="STUDENT"
+                       readonly>
+
+                <!-- Πραγματική τιμή που θα σταλεί -->
+                <input type="hidden" th:field="*{type}" value="STUDENT"/>
             </div>
+
 
             <!-- IDENTIFIER -->
             <div class="mb-3">
                 <label class="form-label">Identifier</label>
-                <input type="text" th:field="*{studentId}" class="form-control"
+                <input type="text" th:field="*{huaId}" class="form-control"
                        placeholder="Example: it2023001" required>
-                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></div>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('huaId')}" th:errors="*{huaId}"></div>
             </div>
 
             <!-- FIRST NAME -->

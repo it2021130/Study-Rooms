@@ -27,11 +27,11 @@ public class AuthController {
             for (GrantedAuthority auth : authentication.getAuthorities()) {
 
                 if (auth.getAuthority().equals("ROLE_STAFF")) {
-                    return "redirect:/staff/dashboard"; // STAFF dashboard
+                    return "redirect:/staff/dashboard"; // STAFF -> dashboard
                 }
 
                 if (auth.getAuthority().equals("ROLE_STUDENT")) {
-                    return "redirect:/profile"; // student profile
+                    return "redirect:/profile"; // student -> profile
                 }
             }
             // fallback

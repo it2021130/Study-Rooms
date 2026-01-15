@@ -5,6 +5,9 @@ import gr.hua.dit.studyrooms.core.model.Reservation;
 import gr.hua.dit.studyrooms.core.service.model.ReservationView;
 
 import org.springframework.stereotype.Component;
+/**
+ * Mapper for converting {@link Reservation} to {@link ReservationView}.
+ */
 
 @Component
 public class ReservationMapper {

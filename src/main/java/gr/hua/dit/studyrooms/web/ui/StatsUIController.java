@@ -5,6 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+/**
+ * UI controller for viewing study room occupancy statistics by staff.
+ */
 @Controller
 @RequestMapping("/staff/stats")
 @PreAuthorize("hasRole('STAFF')")

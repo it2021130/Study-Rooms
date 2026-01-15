@@ -75,7 +75,7 @@ public class PersonBusinessLogicServiceImpl implements PersonBusinessLogicServic
         // --------------------------------------------------
 
         final PersonType type = createPersonRequest.type();
-        final String studentId = createPersonRequest.studentId().strip(); // remove whitespaces
+        final String huaId  = createPersonRequest.huaId().strip(); // remove whitespaces
         final String firstName = createPersonRequest.firstName().strip();
         final String lastName = createPersonRequest.lastName().strip();
         final String emailAddress = createPersonRequest.emailAddress().strip();
@@ -98,7 +98,7 @@ public class PersonBusinessLogicServiceImpl implements PersonBusinessLogicServic
 
         // --------------------------------------------------
 
-        if (this.personRepository.existsByStudentIdIgnoreCase(studentId)) {
+        if (this.personRepository.existsByHuaIdIgnoreCase(huaId )) {
             return CreatePersonResult.fail("Student ID already registered");
         }
 
@@ -121,7 +121,7 @@ public class PersonBusinessLogicServiceImpl implements PersonBusinessLogicServic
 
         Person person = new Person();
         person.setId(null); // auto generated
-        person.setStudentId(studentId);
+        person.sethuaId (huaId);
         person.setType(type);
         person.setFirstName(firstName);
         person.setLastName(lastName);
